@@ -1,0 +1,11 @@
+cur_mkfile := $(abspath $(lastword $(MAKEFILE_LIST)))
+$(info cur_mkfile=$(cur_mkfile))
+ 
+cur_makefile_path0 :=$(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST)))) #ok,0
+cur_makefile_path1 := $(patsubst %/, %, $(dir $(cur_mkfile))) #ok, 1
+ 
+ROOT_PATH = ${cur_makefile_path2}
+$(info cur_makefile_path0=$(cur_makefile_path0))
+$(info cur_makefile_path1=$(cur_makefile_path1))
+$(info cur_makefile_path2=$(dir $(cur_mkfile)))
+

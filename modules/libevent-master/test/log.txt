@@ -1,0 +1,350 @@
+main/methods: [forking] OK
+main/version: OK
+main/base_features: [forking] OK
+main/base_environ: [forking] OK
+main/event_base_new: [forking] OK
+main/free_active_base: [forking] OK
+main/manipulate_active_events: [forking] OK
+main/event_new_selfarg: [forking] OK
+main/event_assign_selfarg: [forking] OK
+main/event_base_get_num_events: [forking] OK
+main/event_base_get_max_events: [forking] OK
+main/bad_assign: [forking] OK
+main/bad_reentrant: [forking] OK
+main/active_later: [forking] OK
+main/event_remove_timeout: [forking] OK
+main/persistent_timeout: [forking] OK
+main/persistent_timeout_jump: [forking] OK
+main/persistent_active_timeout: [forking] OK
+main/priorities: [forking] OK
+main/priority_active_inversion: [forking] OK
+main/common_timeout: [forking] OK
+main/simpleread: [forking] OK
+main/simpleread_multiple: [forking] OK
+main/simplewrite: [forking] OK
+main/simpleclose: [forking] OK
+main/multiple: [forking] OK
+main/persistent: [forking] OK
+main/combined: [forking] OK
+main/simpletimeout: [forking] OK
+main/loopbreak: [forking] OK
+main/loopexit: [forking] OK
+main/loopexit_multiple: [forking] OK
+main/nonpersist_readd: [forking] OK
+main/multiple_events_for_same_fd: [forking] OK
+main/want_only_once: [forking] OK
+main/event_once: [forking] OK
+main/event_once_never: [forking] OK
+main/event_pending: [forking] OK
+main/event_closed_fd_poll: [forking] SKIPPED
+main/dup_fd: [forking] OK
+main/mm_functions: [forking] OK
+main/many_events: [forking] OK
+main/many_events_slow_add: [forking] OK
+main/struct_event_size: OK
+main/get_assignment: [forking] OK
+main/event_foreach: [forking] OK
+main/gettimeofday_cached: [forking] OK
+main/gettimeofday_cached_sleep: [forking] OK
+main/gettimeofday_cached_reset: [forking] OK
+main/gettimeofday_cached_disabled: [forking] OK
+main/gettimeofday_cached_disabled_nosleep: [forking] OK
+main/active_by_fd: [forking] OK
+main/fork: [forking] OK
+main/del_wait: [forking] OK
+main/del_notify: [forking] OK
+heap/randomized: OK
+et/et: [forking] OK
+et/et_mix_error: [forking] OK
+et/et_multiple_events: [forking] OK
+finalize/cb_invoked: [forking] OK
+finalize/free_finalize: [forking] OK
+finalize/within_cb: [forking] OK
+evbuffer/evbuffer: OK
+evbuffer/remove_buffer_with_empty: OK
+evbuffer/remove_buffer_with_empty2: OK
+evbuffer/remove_buffer_with_empty3: OK
+evbuffer/add_buffer_with_empty: OK
+evbuffer/add_buffer_with_empty2: OK
+evbuffer/reserve2: OK
+evbuffer/reserve_many: OK
+evbuffer/reserve_many2: OK
+evbuffer/reserve_many3: OK
+evbuffer/expand: OK
+evbuffer/expand_overflow: OK
+evbuffer/add1: OK
+evbuffer/add2: OK
+evbuffer/reference: OK
+evbuffer/reference2: OK
+evbuffer/iterative: OK
+evbuffer/readln: OK
+evbuffer/search_eol: OK
+evbuffer/find: OK
+evbuffer/ptr_set: OK
+evbuffer/search: OK
+evbuffer/callbacks: OK
+evbuffer/add_reference: OK
+evbuffer/multicast: OK
+evbuffer/multicast_drain: OK
+evbuffer/prepend: [forking] OK
+evbuffer/peek: OK
+evbuffer/peek_first_gt: OK
+evbuffer/freeze_start: OK
+evbuffer/freeze_end: OK
+evbuffer/add_iovec: OK
+evbuffer/copyout: OK
+evbuffer/file_segment_add_cleanup_cb: OK
+evbuffer/add_file_sendfile: [forking] OK
+evbuffer/add_file_mmap: [forking] OK
+evbuffer/add_file_linear: [forking] OK
+evbuffer/add_file_nosegment: [forking] OK
+evbuffer/add_big_file_sendfile: [forking] OK
+evbuffer/add_big_file_mmap: [forking] OK
+evbuffer/add_big_file_linear: [forking] OK
+evbuffer/add_big_file_nosegment: [forking] OK
+evbuffer/add_file_offset_sendfile: [forking] OK
+evbuffer/add_file_offset_mmap: [forking] OK
+evbuffer/add_file_offset_linear: [forking] OK
+evbuffer/add_file_offset_nosegment: [forking] OK
+evbuffer/add_file_offset2_sendfile: [forking] OK
+evbuffer/add_file_offset2_mmap: [forking] OK
+evbuffer/add_file_offset2_linear: [forking] OK
+evbuffer/add_file_offset3_sendfile: [forking] OK
+evbuffer/add_file_offset3_mmap: [forking] OK
+evbuffer/add_file_offset3_linear: [forking] OK
+signal/simplestsignal: [forking] OK
+signal/simplesignal: [forking] OK
+signal/multiplesignal: [forking] OK
+signal/immediatesignal: [forking] OK
+signal/signal_dealloc: [forking] OK
+signal/signal_pipeloss: [forking] OK
+signal/signal_switchbase: [forking] OK
+signal/signal_restore: [forking] OK
+signal/signal_assert: [forking] OK
+signal/signal_while_processing: [forking] OK
+util/ipv4_parse: OK
+util/ipv6_parse: OK
+util/sockaddr_port_parse: OK
+util/sockaddr_port_format: OK
+util/sockaddr_predicates: OK
+util/evutil_snprintf: OK
+util/evutil_strtoll: OK
+util/evutil_casecmp: OK
+util/evutil_rtrim: OK
+util/strlcpy: OK
+util/log: [forking] OK
+util/upcast: OK
+util/integers: OK
+util/rand: [forking] OK
+util/getaddrinfo: [forking] OK
+util/getaddrinfo_live: DISABLED
+util/mm_malloc: OK
+util/mm_calloc: OK
+util/mm_strdup: OK
+util/usleep: OK
+util/monotonic_res: OK
+util/monotonic_res_precise: DISABLED
+util/monotonic_res_fallback: DISABLED
+util/monotonic_prc: OK
+util/monotonic_prc_precise: OK
+util/monotonic_prc_fallback: OK
+util/date_rfc1123: OK
+util/evutil_v4addr_is_local: OK
+util/evutil_v6addr_is_local: OK
+bufferevent/bufferevent: [forking] OK
+bufferevent/bufferevent_pair: [forking] OK
+bufferevent/bufferevent_flush_normal: [forking] OK
+bufferevent/bufferevent_flush_flush: [forking] OK
+bufferevent/bufferevent_flush_finished: [forking] OK
+bufferevent/bufferevent_pair_flush_normal: [forking] OK
+bufferevent/bufferevent_pair_flush_flush: [forking] OK
+bufferevent/bufferevent_pair_flush_finished: [forking] OK
+bufferevent/bufferevent_pair_release_lock: [forking] OK
+bufferevent/bufferevent_watermarks: [forking] OK
+bufferevent/bufferevent_pair_watermarks: [forking] OK
+bufferevent/bufferevent_filters: [forking] OK
+bufferevent/bufferevent_pair_filters: [forking] OK
+bufferevent/bufferevent_filters_disable: [forking] OK
+bufferevent/bufferevent_pair_filters_disable: [forking] OK
+bufferevent/bufferevent_connect: [forking] OK
+bufferevent/bufferevent_connect_defer: [forking] OK
+bufferevent/bufferevent_connect_lock: [forking] OK
+bufferevent/bufferevent_connect_lock_defer: [forking] OK
+bufferevent/bufferevent_connect_unlocked_cbs: [forking] OK
+bufferevent/bufferevent_connect_fail: [forking] OK
+bufferevent/bufferevent_timeout: [forking] OK
+bufferevent/bufferevent_timeout_pair: [forking] OK
+bufferevent/bufferevent_timeout_filter: [forking] OK
+bufferevent/bufferevent_timeout_filter_pair: [forking] OK
+bufferevent/bufferevent_trigger: [forking] OK
+bufferevent/bufferevent_trigger_defer: [forking] OK
+bufferevent/bufferevent_trigger_postpone: [forking] OK
+bufferevent/bufferevent_trigger_defer_postpone: [forking] OK
+bufferevent/bufferevent_zlib: [forking] OK
+bufferevent/bufferevent_connect_fail_eventcb_defer: [forking] OK
+bufferevent/bufferevent_connect_fail_eventcb: [forking] OK
+bufferevent/bufferevent_socket_filter_inactive: [forking] OK
+bufferevent/bufferevent_pair_flush: [forking] OK
+bufferevent/bufferevent_filter_data_stuck: [forking] OK
+http/primitives: OK
+http/base: [forking] OK
+http/bad_headers: OK
+http/parse_query: OK
+http/parse_query_str: OK
+http/parse_query_str_flags: OK
+http/parse_uri: OK
+http/parse_uri_nc: OK
+http/uriencode: OK
+http/basic: [forking] OK
+http/basic_trailing_space: [forking] OK
+http/simple: [forking] OK
+http/simple_nonconformant: [forking] OK
+http/cancel: [forking] OK
+http/cancel_by_host: [forking] OK
+http/cancel_by_host_inactive_server: [forking] OK
+http/cancel_by_host_no_ns: [forking] OK
+http/cancel_inactive_server: [forking] OK
+http/cancel_by_host_no_ns_inactive_server: [forking] OK
+http/cancel_by_host_server_timeout: DISABLED
+http/cancel_server_timeout: DISABLED
+http/cancel_by_host_no_ns_server_timeout: DISABLED
+http/cancel_by_host_ns_timeout_server_timeout: DISABLED
+http/cancel_by_host_ns_timeout: [forking] OK
+http/cancel_by_host_ns_timeout_inactive_server: [forking] OK
+http/virtual_host: [forking] OK
+http/post: [forking] OK
+http/put: [forking] OK
+http/delete: [forking] OK
+http/allowed_methods: [forking] OK
+http/failure: [forking] OK
+http/connection: [forking] OK
+http/persist_connection: [forking] OK
+http/autofree_connection: [forking] OK
+http/connection_async: [forking] OK
+http/close_detection: [forking] OK
+http/close_detection_delay: [forking] OK
+http/bad_request: [forking] OK
+http/incomplete: [forking] OK
+http/incomplete_timeout: [forking] OK
+http/terminate_chunked: [forking] OK
+http/terminate_chunked_oneshot: [forking] OK
+http/on_complete: [forking] OK
+http/highport: [forking] OK
+http/dispatcher: [forking] OK
+http/multi_line_header: [forking] OK
+http/negative_content_length: [forking] OK
+http/chunk_out: [forking] OK
+http/stream_out: [forking] OK
+http/stream_in: [forking] OK
+http/stream_in_cancel: [forking] OK
+http/connection_fail: [forking] OK
+http/connection_retry: DISABLED
+http/connection_retry_conn_address: DISABLED
+http/data_length_constraints: [forking] OK
+http/read_on_write_error: [forking] OK
+http/non_lingering_close: [forking] OK
+http/lingering_close: [forking] OK
+http/ipv6_for_domain: [forking] OK
+http/get_addr: [forking] OK
+http/set_family: [forking] OK
+http/set_family_ipv4: [forking] OK
+http/set_family_ipv6: [forking] OK
+http/write_during_read: [forking] OK
+http/request_own: [forking] OK
+http/request_extra_body: [forking] OK
+http/newreqcb: [forking] OK
+http/https_basic: [forking] OK
+http/https_filter_basic: [forking] OK
+http/https_simple: [forking] OK
+http/https_simple_dirty: [forking] OK
+http/https_incomplete: [forking] OK
+http/https_incomplete_timeout: [forking] OK
+http/https_connection_retry: DISABLED
+http/https_connection_retry_conn_address: DISABLED
+http/https_chunk_out: [forking] OK
+http/https_filter_chunk_out: [forking] OK
+http/https_stream_out: [forking] OK
+http/https_connection_fail: [forking] OK
+http/https_write_during_read: [forking] OK
+http/https_connection: [forking] OK
+http/https_persist_connection: [forking] OK
+dns/server: [forking] OK
+dns/gethostbyname: DISABLED
+dns/gethostbyname6: DISABLED
+dns/gethostbyaddr: DISABLED
+dns/resolve_reverse: DISABLED
+dns/search_empty: [forking] OK
+dns/search: [forking] OK
+dns/search_lower: [forking] OK
+dns/search_cancel: [forking] OK
+dns/retry: [forking] OK
+dns/retry_disable_when_inactive: [forking] OK
+dns/reissue: [forking] OK
+dns/reissue_disable_when_inactive: [forking] OK
+dns/inflight: [forking] OK
+dns/bufferevent_connect_hostname: [forking] OK
+dns/bufferevent_connect_hostname_emfile: [forking] OK
+dns/disable_when_inactive: [forking] OK
+dns/disable_when_inactive_no_ns: [forking] OK
+dns/getaddrinfo_async: [forking] OK
+dns/getaddrinfo_cancel_stress: [forking] OK
+dns/leak_shutdown: [forking] OK
+dns/leak_cancel: [forking] OK
+dns/leak_resume: [forking] OK
+dns/leak_cancel_and_resume: [forking] OK
+dns/leak_resume_send_err: [forking] OK
+dns/leak_cancel_and_resume_send_err: [forking] OK
+dns/client_fail_requests: [forking] OK
+dns/client_fail_requests_getaddrinfo: [forking] OK
+dns/getaddrinfo_race_gotresolve: DISABLED
+evtag/int: [forking] OK
+evtag/fuzz: [forking] OK
+evtag/encoding: [forking] OK
+evtag/peek: OK
+rpc/basic_test: SKIPPED
+rpc/basic_message: SKIPPED
+rpc/basic_client: SKIPPED
+rpc/basic_queued_client: SKIPPED
+rpc/basic_client_with_pause: SKIPPED
+rpc/invalid_type: SKIPPED
+rpc/client_timeout: SKIPPED
+rpc/test: SKIPPED
+thread/basic: [forking] OK
+thread/forking: [forking] OK
+thread/conditions_simple: [forking] OK
+thread/deferred_cb_skew: DISABLED
+thread/no_events: [forking] OK
+listener/randport: [forking] OK
+listener/randport_ts: [forking] OK
+listener/error_unlock: [forking] OK
+listener/error: [forking] OK
+listener/error_ts: [forking] OK
+listener/close_accepted_fd: [forking] OK
+listener/immediate_close: [forking] OK
+ssl/bufferevent_socketpair: [forking] OK
+ssl/bufferevent_socketpair_write_after_connect: [forking] OK
+ssl/bufferevent_filter: [forking] OK
+ssl/bufferevent_filter_write_after_connect: [forking] OK
+ssl/bufferevent_renegotiate_socketpair: [forking] OK
+ssl/bufferevent_renegotiate_filter: [forking] OK
+ssl/bufferevent_socketpair_startopen: [forking] OK
+ssl/bufferevent_filter_startopen: [forking] OK
+ssl/bufferevent_socketpair_dirty_shutdown: [forking] OK
+ssl/bufferevent_filter_dirty_shutdown: [forking] OK
+ssl/bufferevent_renegotiate_socketpair_dirty_shutdown: [forking] OK
+ssl/bufferevent_renegotiate_filter_dirty_shutdown: [forking] OK
+ssl/bufferevent_socketpair_startopen_dirty_shutdown: [forking] OK
+ssl/bufferevent_filter_startopen_dirty_shutdown: [forking] OK
+ssl/bufferevent_socketpair_fd: [forking] OK
+ssl/bufferevent_socketpair_freed: [forking] OK
+ssl/bufferevent_socketpair_freed_fd: [forking] OK
+ssl/bufferevent_filter_freed_fd: [forking] OK
+ssl/bufferevent_socketpair_timeout: [forking] OK
+ssl/bufferevent_socketpair_timeout_freed_fd: [forking] OK
+ssl/bufferevent_connect: [forking] OK
+ssl/bufferevent_connect_sleep: [forking] OK
+ssl/bufferevent_wm: [forking] OK
+ssl/bufferevent_wm_filter: [forking] OK
+ssl/bufferevent_wm_defer: [forking] OK
+ssl/bufferevent_wm_filter_defer: [forking] OK
+323 tests ok.  (51 skipped)
