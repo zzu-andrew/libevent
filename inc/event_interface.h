@@ -13,7 +13,10 @@
 #define SUCCESS       0
 #define FAILED        1
 
-
+/**
+ * @def 定义服务端端口 
+ **/
+#define SERVER_PORT 5001
 
 
 
