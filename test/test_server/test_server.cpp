@@ -1,7 +1,6 @@
 /***
  *  创建event base
  * */
-
 #include <event2/event.h>
 #include <iostream>
 #include <signal.h>

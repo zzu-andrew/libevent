@@ -7,7 +7,7 @@
 #define __EVENT_INTERFACE__
 
 /* MACRO DEFINE */
-#define ERROR        -1
+#define  ERROR        -1
 #define OK            0
 
 #define SUCCESS       0
