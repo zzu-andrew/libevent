@@ -298,49 +298,184 @@ int main()
 
 
 
+### 创建`test_signal`
 
+使用`libevent`处理信号，当信号来的时候使用`libevent`封装的函数调用回调函数，处理具体的信号事物。
 
+```c
+#include <iostream>
+#include <event2/event.h>
+#include <signal.h>
+#include "event_interface.h"
 
+using namespace std;
 
+//sock 文件描述符，which事件类型 arg 传递的参数
+static void Ctrl_C(int sock, short which, void *arg)
+{
+    cout << "Ctrl + C" << " 添加 " << endl;
+}
 
+// Kill函数
+static void Kill(int sock, short which, void *arg)
+{
+    cout << "Kill"<< endl;
+    struct event *ev = (struct event *)arg;
+    // 如果处于非待决状态
+    if(!evsignal_pending(ev, NULL))
+    {
+        event_del(ev);
+        event_add(ev, NULL);
+    }
 
+}
 
+int main(int argc, const char** argv) {
 
+    event_base *base = event_base_new();
 
+    //添加CTRL+c 信号事件 处于np pending
+    //隐藏的状态 EV_SIGNAL|EV_PERSIST
+    struct event *csig = evsignal_new(base, SIGINT, Ctrl_C, base);
+    if(!csig)
+    {
+        cerr << "SIGINT evsignal_new failed!" << endl;
+        return ERROR;
+    }
 
+    //添加事件到pending状态
+    if(event_add(csig, 0) != 0)
+    {
+        cerr << "SIGINT event_add failed!"<< endl;
+        return ERROR;
+    }
 
+    //添加Kill信号  SIGTERM
+    // 非持久只进入一次
+    //  event_self_cbarg 传递当前的event
+    event *ksig = event_new(base, SIGTERM, EV_SIGNAL, Kill, event_self_cbarg());
+    if(!ksig)
+    {
+        cerr << "SIGTERM evsignal_new failed." << endl;
+        return ERROR;
+    }
 
+    // 添加事件到pending
+    if(event_add(ksig, NULL))
+    {
+        cerr << "SIGTERM event_add failed." << endl;
+        return ERROR;
+    }
 
+    //进入事件主循环
+    event_base_dispatch(base);
 
+    event_free(csig);
+    event_free(ksig);
 
+    event_base_free(base);
 
+    return 0;
+}
 
+```
 
+### 创建`test_timer`
 
+`libevent`支持定时触发事件，并且定时触发事件支持调用优化，
 
+```c
+#include <iostream>
+#include <event2/event.h>
+#include <signal.h>
+#include "event_interface.h"
+#include <thread>
 
+using namespace std;
 
+// | s | us |
+static timeval t1 = {5,0};
+void timer1(int sock, short which, void *arg)
+{
+    cout << "{timer1}" << endl;
+    event *ev = (event*)arg;
 
+    // no pending
+    if(!evtimer_pending(ev, &t1))
+    {
+        evtimer_del(ev);
+        evtimer_add(ev, &t1);
+    }
+}
 
+/* 调用的函数内部不能进行延时，需要加延时可以在外部进行添加 */
+// 否则可能造成计时不准确
+void timer2(int sock, short which, void *arg)
+{
+    cout << "[timer2]"<<flush;
+    this_thread::sleep_for(1ms);
+}
 
+void timer3(int sock, short which, void *arg)
+{
+    cout << "[timer3]"<<flush;
+}
 
+int main(int argc, const char** argv) {
 
+    event_base *base = event_base_new();
+   
 
+    // 定时器
+    cout << "test timer" << endl;
 
+    //event new
+    /*
+    #define evtimer_assign(ev, b, cb, arg) \
+	    event_assign((ev), (b), -1, 0, (cb), (arg))
+    #define evtimer_new(b, cb, arg)		event_new((b), -1, 0, (cb), (arg))
+    #define evtimer_add(ev, tv)		event_add((ev), (tv))
+    #define evtimer_del(ev)			event_del(ev)
+    #define evtimer_pending(ev, tv)		event_pending((ev), EV_TIMEOUT, (tv))
+    #define evtimer_initialized(ev)		event_initialized(ev)
+    */
 
+    // 定时器非持久事件
+    // 需要在回调函数中再次进行添加
+    struct event *ev1 = evtimer_new(base,timer1,event_self_cbarg());
+    if(!ev1)
+    {
+        cout << "evtimer_new timer1 failed." << endl;
+        return ERROR;
+    }
 
+    evtimer_add(ev1, &t1);
+    static timeval t2;
+    t2.tv_sec = 1;
+    t2.tv_usec = 200000;//微妙
 
+    //EV_PERSIST  添加之后 回调函数就会一直存在 不在删除
+    event *ev2 = event_new(base,-1,EV_PERSIST,timer2,0);
+    event_add(ev2, &t2);
 
+    event *ev3 = event_new(base, -1, EV_PERSIST, timer3, 0);
+    //超时优化性能优化，默认event用二叉堆存储（完全二叉树），插入删除 0(logn)
+    //优化到双向队列  插入删除0 (1)
+    static timeval tv_in = {1,0};
+    const timeval *t3;
+    t3 = event_base_init_common_timeout(base, &tv_in);
+    event_add(ev3, t3);
 
+    event_base_dispatch(base);
 
+    event_free(ev1);
+    event_free(ev2);
+    event_free(ev3);
+    event_base_free(base);
 
-
-
-
-
-
-
-
+    
+    return 0;
+```
 
 
 

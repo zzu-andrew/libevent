@@ -5,7 +5,7 @@ ROOTDIR =  ./../..
 EXE = test_timer
 
 LDFLAGS = -I$(ROOTDIR)/inc 
-CFLAGS = -g
+CFLAGS = -g -DEVENT_DEBUG_LOGGING_ENABLED
 
 all:${EXE}
 
