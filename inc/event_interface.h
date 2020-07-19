@@ -13,7 +13,14 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <errno.h>
-
+#include <event2/event.h>
+#include <iostream>
+#include <signal.h>
+#include <event2/listener.h>
+#include <string.h>
+#include <event2/bufferevent.h>
+#include <event2/bufferevent_struct.h>
+#include <event2/buffer.h>
 
 
 /* MACRO DEFINE */
