@@ -21,6 +21,7 @@
 #include <event2/bufferevent.h>
 #include <event2/bufferevent_struct.h>
 #include <event2/buffer.h>
+#include <zlib.h>
 
 
 /* MACRO DEFINE */

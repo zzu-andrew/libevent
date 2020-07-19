@@ -9,7 +9,7 @@ CFLAGS = -g
 
 all:${EXE}
 
-${EXE}:test_server.cpp
+${EXE}:${EXE}.cpp
 	echo ${ROOTDIR}
 	g++ ${LDFLAGS} ${CFLAGS} $^ -o $@ -levent
 
