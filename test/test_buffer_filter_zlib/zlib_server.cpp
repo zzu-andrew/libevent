@@ -4,12 +4,18 @@
 
 using namespace std;
 
+// 新版本的C++编译器才支持在定义的时候初始化
 struct Status
 {
+    // 是否开始使用压缩的数据
 	bool start = false;
-	FILE *fp = 0;
-	z_stream *p = 0;
+    // 打开的文件描述符
+	FILE *fp = NULL;
+    // zlib上下文
+	z_stream *p = NULL;
+    // 接收的数据大小
 	int recvNum = 0;
+    // 写入的数据大小
 	int writeNum = 0;
 	~Status()
 	{
@@ -35,6 +41,7 @@ bufferevent_filter_result filter_in(evbuffer *s, evbuffer *d,ev_ssize_t limit,
         int len = evbuffer_remove(s,data,sizeof(data) - 1);
         EVENT_DEBUG << "server recv " << data << endl;
         // 所有放进去的数据都会被  read_cb中重新读取 bufferevent_read
+        // 这里添加数据之后就会触发  read_cb
         evbuffer_add(d,data, len);
         return BEV_OK;
     }
@@ -113,7 +120,7 @@ void read_cb(bufferevent *bev, void *arg)
         
         // 002 回复OK
         bufferevent_write(bev, "OK", 2);
-        // status->start = true;
+        status->start = true;
 
         return;
     }

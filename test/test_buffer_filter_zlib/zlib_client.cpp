@@ -8,7 +8,7 @@ using namespace std;
 
 // 通过void *类型的参数传递整个函数运行的状态 有利于在全局变量满天飞的函数中实现函数可重入
 
-struct ClientStatus
+struct  ClientStatus
 {
     FILE *fp = 0;
     bool end = false;
@@ -48,6 +48,10 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     // 打开压缩文件
     // 取出buffer中数据的引用
     evbuffer_iovec v_in[1];
+    // 将数据的指针拿出来
+    // 这里使用peek是有讲究的，因为下面的压缩函数一次要锁多少数据是不确定的
+    // 这里使用peek将数据不取出，最后使用多少在drain多少 evbuffer_drain(s, nread);
+    // 从而可以达到压缩多少就去除多少数据，没有压缩的数据下次还是会触发filter_out函数
     int n = evbuffer_peek(s, -1, 0, v_in, 1);
     if(n <= 0)
     {
@@ -63,6 +67,7 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     z_stream *p= sta->z_output;
     if(!p)
     {
+        EVENT_DEBUG << "BEV_ERROR" << endl;
         return BEV_ERROR;
     }
     // zlib输入数据大小
@@ -71,6 +76,8 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     p->next_in = (Bytef*)v_in[0].iov_base;
 
     // 申请输出空间大小
+    // 没有使用new因为 new出来的还要传递给buffervent 还牵涉到释放等一系列操作
+    // 直接在bufferevent里面在获取一块使用
     evbuffer_iovec v_out[1];
     evbuffer_reserve_space(d, 4096, v_out, 1);
     // zlib输出空间大小
@@ -90,14 +97,17 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     // p->avail_out 剩余空间大小
     int nwrite = v_out[0].iov_len - p->avail_out;
     // 移除 source evbuffer中数据
+    // 没有移除的数据下次进来还会在这里
     evbuffer_drain(s, nread);
    
    
     EVENT_DEBUG << "filter out "<<endl;
     // 传入des evbuffer
     v_out[0].iov_len =nwrite;
+    // 压缩之后的数据大小，真正的需要放到发送缓存区中发送给对方的数据
     evbuffer_commit_space(d, v_out, 1);
-    EVENT_DEBUG << "clietn nread = "<<nread<<"nwrite = "<<nwrite<< endl;
+    EVENT_DEBUG << "clietn nread = "<<nread << "," <<"nwrite = "<<nwrite<< endl;
+    // 堆读取的数据量 和压缩的之后的总的的数据大小进行统计
     sta->readNum += nread;
     sta->sendNum += nwrite;
     return BEV_OK;
@@ -116,7 +126,7 @@ void client_read_cb(bufferevent *bev, void *arg)
 	{
 		EVENT_DEBUG << "client read cb"<< data << endl;
         // 同时可以开始发送文件了
-		// sta->startSend = true;
+		sta->startSend = true;
 		//开始发送文件,触发写入回调 也就是通知当前是可以吸入文件 可以开始写入
         // Triggers bufferevent data callbacks. 启动触发启动回调函数
 		bufferevent_trigger(bev, EV_WRITE, 0);
