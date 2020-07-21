@@ -43,7 +43,7 @@ bufferevent_filter_result filter_in(evbuffer *s, evbuffer *d,ev_ssize_t limit,
     evbuffer_iovec v_in[1];
     // 读取数据 不清理缓缓冲区
     int n = evbuffer_peek(s, -1, NULL, v_in, 1);
-    if(n < 0)
+    if(n <= 0)
     {
         cout << "evbuffer peek failed" << strerror(errno) << endl;
         return BEV_NEED_MORE;
@@ -53,16 +53,16 @@ bufferevent_filter_result filter_in(evbuffer *s, evbuffer *d,ev_ssize_t limit,
     // zlib 输入数据大小
     p->avail_in = v_in[0].iov_len;
     // zlib输入数据地址
-    p->next_in = (Bytef*)v_in[0].iov_base;
+    p->next_in = (Byte*)v_in[0].iov_base;
 
     // 申请输出空间大小
     evbuffer_iovec v_out[1];
-    evbuffer_reserve_space(d, 4.96, v_out,1);
+    evbuffer_reserve_space(d, 4096, v_out,1);
 
     // zlib输出空间大小
     p->avail_out =v_out[0].iov_len;
     // zlib输出空间地址
-    p->next_out  = (Bytef*)v_out[0].iov_base;
+    p->next_out  = (Byte*)v_out[0].iov_base;
 
     // 解压数据
     int ret = inflate(p, Z_SYNC_FLUSH);
@@ -112,7 +112,7 @@ void read_cb(bufferevent *bev, void *arg)
         }
         
         // 002 回复OK
-        bufferevent_write(bev, "OK", sizeof("OK"));
+        bufferevent_write(bev, "OK", 2);
         status->start = true;
 
         return;
@@ -123,7 +123,8 @@ void read_cb(bufferevent *bev, void *arg)
         // 写入文件
         char data[1024] = {0};
         int len = bufferevent_read(bev, data, sizeof(data) - 1);
-        if(len < 0)
+        // 当buffervent中有数据的时候奖数据写到文件中
+        if(len >= 0)
         {
             fwrite(data, 1, len, status->fp);
             fflush(status->fp);

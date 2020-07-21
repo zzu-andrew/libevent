@@ -12,16 +12,16 @@ struct ClientStatus
     bool startSend = false;
     int readNum = 0;
     int sendNum = 0;
-    z_stream *z_output = NULL;
+    z_stream *z_output = 0;
     ~ClientStatus()
     {
         if(fp)
             fclose(fp);
-        fp = NULL;
+        fp = 0;
         if(z_output)
             deflateEnd(z_output);
         delete z_output;
-        z_output = NULL;
+        z_output = 0;
     }
 };
 
@@ -34,7 +34,9 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     if(!sta->startSend)
     { 
         char data[1024] = {0};
+        // 从sock中取数据
         int len = evbuffer_remove(s, data, sizeof(data));
+        // 将数据放到bufferevent中
         evbuffer_add(d, data,len);
         return BEV_OK;
     }
@@ -90,7 +92,7 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     // 传入des evbuffer
     v_out[0].iov_len =nwrite;
     evbuffer_commit_space(d, v_out, 1);
-    cout << "clietn nread = "<<nread<<"nerite = "<<nwrite<< endl;
+    cout << "clietn nread = "<<nread<<"nwrite = "<<nwrite<< endl;
     sta->readNum += nread;
     sta->sendNum += nwrite;
     return BEV_OK;
@@ -109,7 +111,8 @@ void client_read_cb(bufferevent *bev, void *arg)
 	{
 		cout << "client read cb"<< data << endl;
 		sta->startSend = true;
-		//开始发送文件,触发写入回调
+		//开始发送文件,触发写入回调 也就是通知当前是可以吸入文件 可以开始写入
+        // Triggers bufferevent data callbacks. 启动触发启动回调函数
 		bufferevent_trigger(bev, EV_WRITE, 0);
 	}
 	else

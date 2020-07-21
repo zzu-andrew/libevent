@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 
 	Server(base);
 
-	//Client(base);
+	Client(base);
 
 
 	//事件分发处理
