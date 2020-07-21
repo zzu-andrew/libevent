@@ -5,6 +5,8 @@ using namespace std;
 
 #define FILEPATH "001.txt"
 
+// 通过void *类型的参数传递整个函数运行的状态 有利于在全局变量满天飞的函数中实现函数可重入
+
 struct ClientStatus
 {
     FILE *fp = 0;
@@ -88,11 +90,11 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     evbuffer_drain(s, nread);
    
    
-    cout << "filter out "<<endl;
+    EVENT_DEBUG << "filter out "<<endl;
     // 传入des evbuffer
     v_out[0].iov_len =nwrite;
     evbuffer_commit_space(d, v_out, 1);
-    cout << "clietn nread = "<<nread<<"nwrite = "<<nwrite<< endl;
+    EVENT_DEBUG << "clietn nread = "<<nread<<"nwrite = "<<nwrite<< endl;
     sta->readNum += nread;
     sta->sendNum += nwrite;
     return BEV_OK;
@@ -109,7 +111,7 @@ void client_read_cb(bufferevent *bev, void *arg)
 	int len = bufferevent_read(bev, data, sizeof(data) - 1);
 	if (strcmp(data, "OK") == 0)
 	{
-		cout << "client read cb"<< data << endl;
+		EVENT_DEBUG << "client read cb"<< data << endl;
 		sta->startSend = true;
 		//开始发送文件,触发写入回调 也就是通知当前是可以吸入文件 可以开始写入
         // Triggers bufferevent data callbacks. 启动触发启动回调函数
@@ -119,7 +121,7 @@ void client_read_cb(bufferevent *bev, void *arg)
 	{
 		bufferevent_free(bev);
 	}
-	cout << "client_read_cb " << len << endl;
+	EVENT_DEBUG << "client_read_cb " << len << endl;
 }
 
 void client_write_cb(bufferevent *bev, void *arg)
@@ -135,28 +137,31 @@ void client_write_cb(bufferevent *bev, void *arg)
         // 获取输出缓冲区的大小
         evbuffer *evb = bufferevent_get_output(bevf);
         int len = evbuffer_get_length(evb);
-        cout << "evbuffer get length = " << len << endl;
+        EVENT_DEBUG << "evbuffer get length = " << len << endl;
+        // 缓存区没有数据
         if(len <= 0)
         {
-            cout << "Client read"<<s->readNum << "send"<<s->sendNum << endl;
+            EVENT_DEBUG << "Client read"<<s->readNum << "send"<<s->sendNum << endl;
             // 立即清理如果缓冲区有数据
             bufferevent_free(bev);
             delete s;
             return ;
         }
+        // 要是缓存区是有数据的  那就需要刷新缓冲区 否者函数不回在进来
+        // 直到缓存区真正的为0的时候才对缓冲区进行清理
         bufferevent_flush(bev, EV_WRITE, BEV_FINISHED);
         return ;
     }
 
     if(!fp) return;
-    cout << "client  write cb " << endl;
+    EVENT_DEBUG << "client  write cb " << endl;
     // 读取文件
     char data[1024] = {0};
     int len = fread(data,1,sizeof(data), fp);
     if(len <=0)
     {
         s->end = true;
-        // 刷新缓冲区
+        // 刷新缓冲区  函数会再次进来
         bufferevent_flush(bev, EV_WRITE, BEV_FINISHED);
         return;
     }
@@ -168,16 +173,16 @@ void client_write_cb(bufferevent *bev, void *arg)
 
 void client_event_cb(bufferevent *bev, short events, void *arg)
 {
-    cout << "client event cb"<<events << endl;
+    EVENT_DEBUG << "client event cb"<<events << endl;
     if(events&BEV_EVENT_CONNECTED)
     {
-        cout << "BEV_EVENT_CONNECTED" << endl;
+        EVENT_DEBUG << "BEV_EVENT_CONNECTED" << endl;
         // 发送文件名
         bufferevent_write(bev, FILEPATH, strlen(FILEPATH));
         FILE *fp = fopen(FILEPATH, "rb");
         if(!fp)
         {
-            cout << "open file" << FILEPATH << "failed" << endl;
+            EVENT_DEBUG << "open file" << FILEPATH << "failed" << endl;
             return;
         }
         ClientStatus *s  = new ClientStatus();
@@ -202,7 +207,7 @@ void client_event_cb(bufferevent *bev, short events, void *arg)
 
 void Client(event_base *base)
 {
-    cout << "begin Client" << endl;
+    EVENT_DEBUG << "begin Client" << endl;
     // 连接服务器
     sockaddr_in sin;
     memset(&sin, 0, sizeof(sin));

@@ -108,5 +108,7 @@ int main()
 		event_base_free(base);
 	}
 
+	EVENT_DEBUG << "hekkolooolololol"<< endl;
+
 	return 0;
 }

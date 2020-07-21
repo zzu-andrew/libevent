@@ -24,6 +24,10 @@
 #include <zlib.h>
 
 
+
+// Debug echo
+#define EVENT_DEBUG   cout << '[' <<__FILE__ << ']' << '[' <<  __FUNCTION__ << ']'<< '[' << __LINE__ << ']'
+
 /* MACRO DEFINE */
 #define  ERROR        -1
 #define OK             0

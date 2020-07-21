@@ -33,7 +33,7 @@ bufferevent_filter_result filter_in(evbuffer *s, evbuffer *d,ev_ssize_t limit,
     {
         char data[1024] = {0};
         int len = evbuffer_remove(s,data,sizeof(data) - 1);
-        cout << "server recv " << data << endl;
+        EVENT_DEBUG << "server recv " << data << endl;
         // 所有放进去的数据都会被  read_cb中重新读取 bufferevent_read
         evbuffer_add(d,data, len);
         return BEV_OK;
@@ -45,7 +45,7 @@ bufferevent_filter_result filter_in(evbuffer *s, evbuffer *d,ev_ssize_t limit,
     int n = evbuffer_peek(s, -1, NULL, v_in, 1);
     if(n <= 0)
     {
-        cout << "evbuffer peek failed" << strerror(errno) << endl;
+        EVENT_DEBUG << "evbuffer peek failed" << strerror(errno) << endl;
         return BEV_NEED_MORE;
     }
     // 解压上下文
@@ -81,11 +81,11 @@ bufferevent_filter_result filter_in(evbuffer *s, evbuffer *d,ev_ssize_t limit,
 
     // 移除source evbuffer中数据
     evbuffer_drain(s, nread);
-    cout << "filter out "<< endl;
+    EVENT_DEBUG << "filter out "<< endl;
     // 传入des_evbuffer
     v_out[0].iov_len = nwrite;
     evbuffer_commit_space(d, v_out, 1);
-    cout <<"server nread = "<< nread << "nwrite = "<<nwrite<<endl;
+    EVENT_DEBUG <<"server nread = "<< nread << "nwrite = "<<nwrite<<endl;
     status->recvNum += nread;
     status->writeNum += nwrite;
     return BEV_OK;
@@ -107,7 +107,7 @@ void read_cb(bufferevent *bev, void *arg)
         status->fp =fopen(out.c_str(), "wb");
         if(!status->fp)
         {
-            cout << "server open " << out <<  "failed" <<endl;
+            EVENT_DEBUG << "server open " << out <<  "failed" <<endl;
             return;
         }
         
@@ -135,13 +135,13 @@ void read_cb(bufferevent *bev, void *arg)
 
 void event_cb(bufferevent *bev, short events, void *arg)
 {
-    cout << "server event_cb" << events << endl;
+    EVENT_DEBUG << "server event_cb" << events << endl;
     Status * status = (Status *)arg;
     if(events&BEV_EVENT_EOF)
     {
-        cout << "server event BEV_EVENT_EOF"<< endl;
-        cout << "server recv"<< status->recvNum;
-        cout << "write："<<status->writeNum<< endl;
+        EVENT_DEBUG << "server event BEV_EVENT_EOF"<< endl;
+        EVENT_DEBUG << "server recv"<< status->recvNum;
+        EVENT_DEBUG << "write："<<status->writeNum<< endl;
         delete status;
         bufferevent_free(bev);
     }
@@ -150,7 +150,7 @@ void event_cb(bufferevent *bev, short events, void *arg)
 
 static void listen_cb(struct evconnlistener * e, evutil_socket_t s, struct sockaddr *a, int socklen, void *arg)
 {
-	cout << "listen_cb" << endl;
+	EVENT_DEBUG << "listen_cb" << endl;
 	event_base *base = (event_base *)arg;
     // 全部都设置了的效果就是后期只需要关闭bufferevent filter就会将socket 还有buffer event等都同时关闭掉
 	//1 创建一个bufferevent 用来通信
@@ -179,7 +179,7 @@ static void listen_cb(struct evconnlistener * e, evutil_socket_t s, struct socka
 
 void Server(event_base*base)
 {
-	cout << "begin Server" << endl;
+	EVENT_DEBUG << "begin Server" << endl;
 	//监听端口
     //socket ，bind，listen 绑定事件
 	sockaddr_in sin;

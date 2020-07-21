@@ -18,20 +18,20 @@ int main(int argc, char *argv[])
 	//一些socket程序莫名宕掉的原因
 	if(signal(SIGPIPE, SIG_IGN) == SIG_ERR)
 	{
-		cout << "ignal pipe signal" << endl;
+		EVENT_DEBUG << "ignal pipe signal" << endl;
 	}
 
-    std::cout << "test libevent!\n"; 
+    std::EVENT_DEBUG << "test libevent!\n"; 
 	//创建libevent的上下文
 	event_base * base = event_base_new();
 	if (!base)
 	{
-		cout << "event_base_new failed." << endl;
+		EVENT_DEBUG << "event_base_new failed." << endl;
 		return -1;
 	}
 	else
 	{
-		cout << "event_base_new success!" << endl;
+		EVENT_DEBUG << "event_base_new success!" << endl;
 	}
 
 
