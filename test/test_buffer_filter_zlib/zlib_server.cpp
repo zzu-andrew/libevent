@@ -113,7 +113,7 @@ void read_cb(bufferevent *bev, void *arg)
         
         // 002 回复OK
         bufferevent_write(bev, "OK", 2);
-        status->start = true;
+        // status->start = true;
 
         return;
     }

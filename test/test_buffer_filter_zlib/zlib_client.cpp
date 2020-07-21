@@ -4,6 +4,7 @@
 using namespace std;
 
 #define FILEPATH "001.txt"
+// #define FILEPATH "001.bmp"
 
 // 通过void *类型的参数传递整个函数运行的状态 有利于在全局变量满天飞的函数中实现函数可重入
 
@@ -11,6 +12,7 @@ struct ClientStatus
 {
     FILE *fp = 0;
     bool end = false;
+    // 是否可以开始发送文件
     bool startSend = false;
     int readNum = 0;
     int sendNum = 0;
@@ -19,11 +21,11 @@ struct ClientStatus
     {
         if(fp)
             fclose(fp);
-        fp = 0;
+        fp = NULL;
         if(z_output)
             deflateEnd(z_output);
         delete z_output;
-        z_output = 0;
+        z_output = NULL;
     }
 };
 
@@ -36,7 +38,8 @@ bufferevent_filter_result filter_out(evbuffer *s, evbuffer *d,ev_ssize_t limit, 
     if(!sta->startSend)
     { 
         char data[1024] = {0};
-        // 从sock中取数据
+        // 从sock中取数据 并将数据直接放到对应的eventbuffer中
+        // 在没有发送之前一直是按照明文进行发送
         int len = evbuffer_remove(s, data, sizeof(data));
         // 将数据放到bufferevent中
         evbuffer_add(d, data,len);
@@ -112,7 +115,8 @@ void client_read_cb(bufferevent *bev, void *arg)
 	if (strcmp(data, "OK") == 0)
 	{
 		EVENT_DEBUG << "client read cb"<< data << endl;
-		sta->startSend = true;
+        // 同时可以开始发送文件了
+		// sta->startSend = true;
 		//开始发送文件,触发写入回调 也就是通知当前是可以吸入文件 可以开始写入
         // Triggers bufferevent data callbacks. 启动触发启动回调函数
 		bufferevent_trigger(bev, EV_WRITE, 0);
