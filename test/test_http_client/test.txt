@@ -1,0 +1,12 @@
+[test_http_client.cpp][main][265]test http client!
+[test_http_client.cpp][TestGetHttp][74]event base new success!
+[test_http_client.cpp][TestGetHttp][91]scheme is http
+[test_http_client.cpp][TestGetHttp][100]port is 80
+[test_http_client.cpp][TestGetHttp][109]host is ffmpeg.club
+[test_http_client.cpp][TestGetHttp][117]path is /lesson_img/101.jpg
+[test_http_client.cpp][TestGetHttp][128]query is NULL
+[test_http_client.cpp][http_client_cb][16]http client cb
+[test_http_client.cpp][http_client_cb][30]request path is /lesson_img/101.jpg
+[test_http_client.cpp][http_client_cb][33]filepath is  ./lesson_img/101.jpg
+[test_http_client.cpp][http_client_cb][44]Response :OK
+[test_http_client.cpp][http_client_cb][46]OK

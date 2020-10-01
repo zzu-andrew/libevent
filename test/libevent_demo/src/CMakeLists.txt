@@ -1,22 +1,23 @@
+
+# 针对cmake版本的要求
 cmake_minimum_required(VERSION 3.5)
 
-project(myLibevent)
+project(myLibevntTest)
 
-# message("top: CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 
-file(GLOB USER_LIBS_PATH ../lib/*.c)
+set(FILE_DESC_TEST fileDescTest)
+add_executable(${FILE_DESC_TEST} main.c)
 
-add_executable(libeventTest ./../src/main.c)
+file(GLOB USER_LIBS_FILE ./../lib/*.c)
 
 add_library(event
-    STATIC # 编译库的类型 SHARED STATIC
-    ${USER_LIBS_PATH}
-    )
- 
-target_link_libraries(libeventTest
+    STATIC #将库编译成静态库
+    ${USER_LIBS_FILE})       
+
+message(STATUS ${USER_LIBS_FILE})
+
+target_link_libraries(${FILE_DESC_TEST} 
     PUBLIC event)
 
-target_include_directories(libeventTest PUBLIC ./../lib)
+target_include_directories(${FILE_DESC_TEST} PUBLIC ./../lib)
 
-
-message(STATUS ${USER_LIBS_PATH})

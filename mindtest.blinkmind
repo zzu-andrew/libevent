@@ -17,7 +17,7 @@
         },
         {
           "type": "DESC",
-          "data": "* \n\n\n\n## \n\n"
+          "data": "* \n\n\n## \n\n# \n\n\n"
         }
       ]
     }
@@ -34,8 +34,7 @@
       "marginH": 60,
       "marginV": 20,
       "contentStyle": {
-        "lineHeight": "1.5",
-        "fontSize": "16px"
+        "lineHeight": "1.5"
       },
       "linkStyle": {
         "lineRadius": 5,
@@ -44,26 +43,41 @@
       },
       "rootTopic": {
         "contentStyle": {
-          "fontSize": "36px"
+          "fontSize": "34px",
+          "borderRadius": "35px",
+          "padding": "16px 18px 16px 18px"
         },
         "subLinkStyle": {
           "lineType": "curve",
-          "lineWidth": "3px"
+          "lineWidth": "3px",
+          "lineColor": "rgb(113, 203, 45)"
         }
       },
       "primaryTopic": {
         "contentStyle": {
-          "fontSize": "24px"
+          "borderWidth": "1px",
+          "borderStyle": "solid",
+          "borderRadius": "20px",
+          "fontSize": "17px",
+          "padding": "10px 15px 10px 15px"
         },
         "subLinkStyle": {
           "lineType": "curve",
-          "lineWidth": "3px"
+          "lineWidth": "3px",
+          "lineColor": "rgb(113, 203, 45)"
         }
       },
       "normalTopic": {
+        "contentStyle": {
+          "border": "1px solid #e8eaec",
+          "borderRadius": "20px",
+          "fontSize": "17px",
+          "padding": "4px 10px"
+        },
         "subLinkStyle": {
           "lineType": "curve",
-          "lineWidth": "3px"
+          "lineWidth": "3px",
+          "lineColor": "white"
         }
       }
     }

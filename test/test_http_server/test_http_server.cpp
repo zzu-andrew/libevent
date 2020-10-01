@@ -53,7 +53,7 @@ void http_cb(evhttp_request *request, void *arg)
 	} 
 
 	// 回复浏览器
-	// 状态行  消息报头 相应正文 HTTP_NOTFOUND HTTP_INTERNAL
+	// 状态行  消息报头 响应正文 HTTP_NOTFOUND HTTP_INTERNAL
 
 	// 分析出请求的文件uri
 	// 设置根目录 WEBROOT
@@ -65,7 +65,7 @@ void http_cb(evhttp_request *request, void *arg)
 		filepath += DEFAULTINDEX;
 	}
 
-	// 消息报头
+	// 消息报头  需要回复浏览器的消息报头
 	evkeyvalq *outhead = evhttp_request_get_output_headers(request);
 	// 要支持图片  js  css 下载zip文件
 	// 获取文件后缀
@@ -98,6 +98,7 @@ void http_cb(evhttp_request *request, void *arg)
 		return;
 	}
 
+	// 需要回复浏览器的buff也就是消息内容
 	evbuffer  *outbuff = evhttp_request_get_output_buffer(request);
 	for(;;)
 	{
